@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import App from './components/app'
+import Main from './components/Main'
 import './styles/app.scss'
 
-render(<App/>, document.getElementById('main'))
+render(<Main />, document.getElementById('main'))
