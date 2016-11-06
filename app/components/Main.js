@@ -6,19 +6,27 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
+    // Functions
+    this.showConsole = this.showConsole.bind(this);
+    this.exitConsole = this.exitConsole.bind(this);
+
+    // State
     this.state = { console: false }
   }
 
-  handleClick() {
+  showConsole() {
     this.setState({console: true})
+  }
+
+  exitConsole() {
+    this.setState({console: false})
   }
 
   render () {
     if (this.state.console === true) {
-      return <Console />
+      return <Console handlePressEscape={this.exitConsole} />
     } else {
-      return <Cloak handleClick={this.handleClick} />
+      return <Cloak handleClick={this.showConsole} />
     }
   }
 }

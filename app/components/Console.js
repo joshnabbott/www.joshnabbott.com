@@ -17,17 +17,20 @@ class Console extends React.Component {
     this.handleKeyUp = this.handleKeyUp.bind(this);
 
     // State
-    this.state = {
-      messages: []
-    }
+    this.state = { messages: [] }
   }
 
   componentDidMount() {
     this.textInput.focus();
+    document.body.addEventListener('keyup', (e) => { this.handlePressEsc(e) })
   }
 
   componentDidUpdate() {
     this.consoleViewer.scrollTop = this.consoleViewer.scrollHeight;
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('keyup', this.handlePressEsc)
   }
 
   handleKeyUp(e) {
@@ -40,6 +43,9 @@ class Console extends React.Component {
     }
   }
 
+  handlePressEsc(e) {
+    if (e.key === 'Escape') this.props.handlePressEscape();
+  }
 
   submitQuery(query) {
     $.post('http://pandorabots.herokuapp.com', {
@@ -62,7 +68,7 @@ class Console extends React.Component {
       <div>
         <div ref={(e) => this.consoleViewer = e} style={{ height: '50%', overflowY: 'auto' }}><ConsoleMessages messages={this.state.messages} /></div>
 
-        <input ref={(e) => this.textInput = e } type="text" autoComplete="off" placeholder="Out of the blue and into the black..." 
+        <input ref={(e) => this.textInput = e } type="text" autoComplete="off" placeholder="go on, say something..."
           style={{
             backgroundColor: 'transparent',
             borderWidth: 0,
