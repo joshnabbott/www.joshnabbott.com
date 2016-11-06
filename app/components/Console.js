@@ -63,7 +63,7 @@ class Console extends React.Component {
       <div>
         <div ref={(e) => this.consoleViewer = e} style={{ height: '50%', overflowY: 'auto' }}><ConsoleMessages messages={this.state.messages} /></div>
 
-        <input ref={(e) => this.textInput = e } type="text" autoComplete="off" placeholder="go on, say something..." 
+        <input ref={(e) => this.textInput = e } type="text" autoComplete="off" placeholder="Out of the blue and into the black..." 
           style={{
             backgroundColor: 'transparent',
             borderWidth: 0,
