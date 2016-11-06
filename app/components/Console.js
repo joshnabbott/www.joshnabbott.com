@@ -1,7 +1,9 @@
-import React from 'react'
+import React from 'react';
 import update from 'immutability-helper';
-import ConsoleMessages from '../components/ConsoleMessages'
+import ConsoleMessages from '../components/ConsoleMessages';
 import $ from '../vendor/jquery';
+import {sanitize} from '../lib/TextHelper';
+import LocalStorage from '../lib/LocalStorage';
 
 class Console extends React.Component {
   constructor(props) {
@@ -9,13 +11,13 @@ class Console extends React.Component {
 
     // properties
     this.botID = '91337c8f7e3434ee';
+    this.customerId = LocalStorage.get('customer_id'),
 
     // Functions
     this.handleKeyUp = this.handleKeyUp.bind(this);
 
     // State
     this.state = {
-      custID: null,
       messages: []
     }
   }
@@ -38,22 +40,19 @@ class Console extends React.Component {
     }
   }
 
-  // A lot of responses are coming back with multiple spaces
-  // this replaces multiple spaces for just one
-  sanitizeResponse(dirtyString) {
-    return dirtyString.replace(/\s{2,}/g, ' '); 
-  }
 
   submitQuery(query) {
     $.post('http://pandorabots.herokuapp.com', {
-      custid: this.state.custID,
+      custid: this.customerId,
       botid: this.botID,
       input: query
     }, (data) => {
       const parsed = JSON.parse(data);
+
+      if (typeof(this.customerId) === 'undefined') LocalStorage.set('customer_id', parsed.customer_id);
+
       this.setState({
-        custID: parsed.customer_id,
-        messages: update(this.state.messages, { $push: [{ him: this.sanitizeResponse(parsed.response) }] })
+        messages: update(this.state.messages, { $push: [{ him: sanitize(parsed.response) }] })
       });
     });
   }
