@@ -15,6 +15,7 @@ class Console extends React.Component {
 
     // Functions
     this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handlePressEsc = this.handlePressEsc.bind(this);
 
     // State
     this.state = { messages: [] }
@@ -22,11 +23,12 @@ class Console extends React.Component {
 
   componentDidMount() {
     this.textInput.focus();
-    document.body.addEventListener('keyup', (e) => { this.handlePressEsc(e) })
+
+    document.body.addEventListener('keyup', this.handlePressEsc)
   }
 
   componentDidUpdate() {
-    this.consoleViewer.scrollTop = this.consoleViewer.scrollHeight;
+    this.positionViewer();
   }
 
   componentWillUnmount() {
@@ -45,6 +47,10 @@ class Console extends React.Component {
 
   handlePressEsc(e) {
     if (e.key === 'Escape') this.props.handlePressEscape();
+  }
+
+  positionViewer() {
+    this.consoleViewer.scrollTop = this.consoleViewer.scrollHeight;
   }
 
   submitQuery(query) {
